@@ -2,15 +2,18 @@ version: '3.1'
 
 services:
   adagios_dev:
-    image: opinkerfi/adagios-git:latest
+    image: adagios
     ports:
-      - 8080:80
+      - 8088:80
+      - 6557:6557
     volumes:
-      - ./adagios:/opt/adagios
-      - ./pynag:/opt/pynag
-      - ./logs:/var/log/nagios
+      - ./adagios:/opt
+      - ./pynag:/opt
+      - ./logs:/var/log
+      - ./log/httpd:/etc/httpd/logs
 
 volumes:
   adagios:
   pynag:
   logs:
+  httpd:

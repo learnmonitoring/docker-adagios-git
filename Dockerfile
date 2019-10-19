@@ -1,6 +1,7 @@
 FROM centos:centos7
-MAINTAINER gardar@ok.is
+MAINTAINER tjyang2001@gmail.com
 
+# fork from gardar@ok.is
 # - Install basic packages (e.g. python-setuptools is required to have python's easy_install)
 # - Install yum-utils so we have yum-config-manager tool available
 # - Install inotify, needed to automate daemon restarts after config file changes
@@ -73,6 +74,25 @@ WORKDIR /opt/
 RUN pip install django==1.6
 RUN pip install simplejson
 RUN git clone git://github.com/pynag/pynag.git
+
+# Install okconfig from Git
+RUN mkdir -p /opt/okconfig
+WORKDIR /opt/
+#RUN pip install django==1.6
+#RUN pip install simplejson
+RUN git clone https://github.com/learnmonitoring/okconfig.git
+RUN echo 'export PYTHONPATH=$PYTHONPATH:/opt/okconfig' > /etc/profile.d/okconfig.sh
+RUN cp /opt/okconfig/etc/okconfig.conf /etc/okconfig.conf
+RUN source /etc/profile
+RUN ln -s /opt/okconfig/usr/share/okconfig /usr/share/
+RUN ln -s /opt/okconfig/usr/bin/okconfig /usr/local/bin/
+
+# Remember to edit /etc/okconfig.conf and verify all paths apply to your system
+# Configure Nagios.cfg
+#RUN okconfig init
+
+# Test
+#RUN okconfig verify
 
 # Install Adagios from Git
 RUN mkdir -p /opt/adagios
