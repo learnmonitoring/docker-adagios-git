@@ -78,7 +78,7 @@ RUN git clone git://github.com/pynag/pynag.git
 # Install okconfig from Git
 RUN mkdir -p /opt/okconfig
 WORKDIR /opt/
-#RUN pip install django==1.6
+RUN pip install python-paramiko
 #RUN pip install simplejson
 RUN git clone https://github.com/learnmonitoring/okconfig.git
 RUN echo 'export PYTHONPATH=$PYTHONPATH:/opt/okconfig' > /etc/profile.d/okconfig.sh
