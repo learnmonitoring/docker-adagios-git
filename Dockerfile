@@ -29,11 +29,19 @@ RUN yum clean all && yum -y update
 # Install Deps          
 #
 RUN yum install -y git acl libstdc++-static python-setuptools facter mod_wsgi postfix python-pip sudo
+RUN yum install -y python2-paramiko
 RUN pip install --upgrade pip
 
 # Install Nagios 4
 #
 RUN yum install -y nagios nagios-plugins-all pnp4nagios
+
+# Enable snmpt trap for Nagios 4
+
+RUN  yum install -y snmptt net-snmp net-snmp-utils snmptt perl-Sys-Syslog
+
+
+
 
 #
 # Enable and start services 
@@ -71,14 +79,14 @@ RUN chown -R nagios:nagios /etc/nagios/* /etc/nagios/.git
 # Install Pynag from Git
 RUN mkdir -p /opt/pynag
 WORKDIR /opt/
-RUN pip install django==1.6
-RUN pip install simplejson
+#RUN pip install django==1.6
+RUN yum install -y python2-django16 python-simplejson
+#RUN pip install simplejson
 RUN git clone git://github.com/pynag/pynag.git
 
 # Install okconfig from Git
 RUN mkdir -p /opt/okconfig
 WORKDIR /opt/
-RUN pip install python-paramiko
 #RUN pip install simplejson
 RUN git clone https://github.com/learnmonitoring/okconfig.git
 RUN echo 'export PYTHONPATH=$PYTHONPATH:/opt/okconfig' > /etc/profile.d/okconfig.sh
